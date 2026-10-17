@@ -1,0 +1,6 @@
+{
+  "name": "SumDrop - 数字求和消除",
+  "description": "益智数学求和方块消除游戏，点击任意位置数字凑齐目标，防止方块触顶！支持经典模式与计时挑战。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
