@@ -290,7 +290,7 @@ export default function App() {
             setTarget(freshTarget);
             setSelectedSteps([]);
 
-            addFloatingText('超时增行!', window.innerWidth / 2 - 40, window.innerHeight / 2, '#f43f5e', 1.1);
+            addFloatingText('超时增行！小兔子等急啦!', window.innerWidth / 2 - 70, window.innerHeight / 2, '#f43f5e', 1.1);
             return nextBoard;
           });
 
@@ -388,7 +388,7 @@ export default function App() {
 
       // Visual floating score
       addFloatingText(
-        `+${earnedScore}${nextCombo > 1 ? ` (${nextCombo}x)` : ''}`,
+        `+${earnedScore} 🥕${nextCombo > 1 ? ` (${nextCombo}x)` : ''}`,
         window.innerWidth / 2 - 30,
         window.innerHeight / 2 - 50,
         '#fbbf24',
@@ -540,7 +540,7 @@ export default function App() {
         setTarget(freshTarget);
         setSelectedSteps([]);
 
-        addFloatingText('💥 炸弹消除顶行!', window.innerWidth / 2 - 60, window.innerHeight / 2, '#f43f5e', 1.2);
+        addFloatingText('💥 炸弹消除顶行胡萝卜!', window.innerWidth / 2 - 70, window.innerHeight / 2, '#f43f5e', 1.2);
         return nextBoard;
       }
       return currentTiles;
@@ -563,7 +563,7 @@ export default function App() {
       const { target: freshTarget } = generateSolvableTarget(flat, level);
       setTarget(freshTarget);
 
-      addFloatingText('+1 行', window.innerWidth / 2 - 20, window.innerHeight / 2, '#cbd5e1');
+      addFloatingText('+1 行胡萝卜 🥕', window.innerWidth / 2 - 35, window.innerHeight / 2, '#cbd5e1');
       return nextBoard;
     });
   }, [status, pushRowFromBottom, triggerGameOver, getFlatActiveTiles, level, addFloatingText]);
@@ -665,10 +665,10 @@ export default function App() {
       </main>
 
       {/* Footer info: Quiet & Elegant */}
-      <footer className="w-full py-2 px-4 text-center text-[11px] text-slate-600 border-t border-slate-900 flex items-center justify-center gap-3">
+      <footer className="w-full py-2 px-4 text-center text-[11px] text-slate-500 border-t border-slate-900 flex items-center justify-center gap-3">
         <span>键盘快捷键：Esc 取消选择 · H 提示 · B 炸弹 · R 重开</span>
         <span aria-hidden="true">·</span>
-        <span>SumDrop 数学消除益智</span>
+        <span>SumDrop 贪吃兔与胡萝卜求和</span>
       </footer>
 
       {/* Modals */}

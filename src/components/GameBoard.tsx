@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TileData } from '../types/game';
-import { AlertOctagon, Sparkles, Bomb, Zap } from 'lucide-react';
+import { CarrotTile } from './CarrotTile';
+import { BunnyCeiling } from './BunnyCeiling';
 
 interface GameBoardProps {
   rows: number;
@@ -21,61 +22,32 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   isNearDanger,
   isCriticalDanger,
 }) => {
-  // Color styling based on number value for rapid visual cognition
-  const getTileColor = (value: number, isSelected: boolean, isHinted: boolean) => {
-    if (isSelected) {
-      return 'bg-gradient-to-b from-amber-400 to-amber-500 text-slate-950 font-black border-amber-300 shadow-md shadow-amber-500/40 ring-2 ring-amber-300 scale-95';
+  // Compute column heights (how close carrots are to the bunny mouths at row 0)
+  const columnHeights = useMemo(() => {
+    const heights: number[] = Array(cols).fill(0);
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        if (tiles[r]?.[c] !== null) {
+          heights[c] = rows - r; // e.g. row 0 => 8, row 1 => 7
+          break;
+        }
+      }
     }
-    if (isHinted) {
-      return 'bg-gradient-to-b from-yellow-500/30 to-amber-600/30 text-amber-200 border-amber-400 ring-2 ring-amber-400/80 animate-pulse';
-    }
-
-    // Number tier coloring (anti-slop, clean, high contrast)
-    if (value <= 3) {
-      return 'bg-slate-800/90 hover:bg-slate-700/90 text-sky-300 border-sky-500/20 hover:border-sky-400/50 shadow-xs';
-    } else if (value <= 6) {
-      return 'bg-slate-800/90 hover:bg-slate-700/90 text-emerald-300 border-emerald-500/20 hover:border-emerald-400/50 shadow-xs';
-    } else if (value <= 9) {
-      return 'bg-slate-800/90 hover:bg-slate-700/90 text-amber-300 border-amber-500/20 hover:border-amber-400/50 shadow-xs';
-    } else {
-      return 'bg-slate-800/90 hover:bg-slate-700/90 text-purple-300 border-purple-500/20 hover:border-purple-400/50 shadow-xs';
-    }
-  };
+    return heights;
+  }, [rows, cols, tiles]);
 
   return (
-    <div className="relative w-full max-w-xl mx-auto px-4 py-2 select-none">
-      {/* Danger Ceiling Line (Red Zone Indicator) */}
-      <div className="relative mb-2">
-        <div
-          className={`flex items-center justify-between px-3 py-1 rounded-md text-[11px] font-mono tracking-wider uppercase transition-colors border ${
-            isCriticalDanger
-              ? 'bg-rose-950/80 border-rose-500 text-rose-300 animate-danger-pulse shadow-md shadow-rose-950'
-              : isNearDanger
-              ? 'bg-amber-950/60 border-amber-500/80 text-amber-300 shadow-sm'
-              : 'bg-slate-900/60 border-slate-800 text-slate-500'
-          }`}
-        >
-          <div className="flex items-center gap-1.5 font-bold">
-            <AlertOctagon className={`w-3.5 h-3.5 ${isCriticalDanger ? 'text-rose-400' : isNearDanger ? 'text-amber-400' : 'text-slate-600'}`} />
-            <span>{isCriticalDanger ? '触顶极度危险！即将游戏结束' : isNearDanger ? '触顶预警区域' : '顶部警戒线'}</span>
-          </div>
-          <span className="text-[10px] opacity-75">LIMIT CEILING</span>
-        </div>
-
-        {/* Hazard strip visual line */}
-        <div
-          className={`h-1 w-full mt-1 rounded-full transition-colors ${
-            isCriticalDanger
-              ? 'bg-gradient-to-r from-rose-600 via-rose-400 to-rose-600 animate-pulse'
-              : isNearDanger
-              ? 'bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600'
-              : 'bg-slate-800'
-          }`}
-        />
-      </div>
+    <div className="relative w-full max-w-xl mx-auto px-3 sm:px-4 py-1 select-none">
+      {/* 🐰 The Bunnies With Mouths Wide Open waiting at the top */}
+      <BunnyCeiling
+        cols={cols}
+        columnHeights={columnHeights}
+        isCriticalDanger={isCriticalDanger}
+        isNearDanger={isNearDanger}
+      />
 
       {/* The Game Grid Container */}
-      <div className="relative p-2.5 sm:p-3 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-sm">
+      <div className="relative p-2 sm:p-3 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-sm">
         {/* Ambient grid background cells for empty slots */}
         <div
           className="grid gap-1.5 sm:gap-2.5"
@@ -87,70 +59,40 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             Array.from({ length: cols }).map((_, cIdx) => {
               const tile = tiles[rIdx]?.[cIdx];
               const isSelected = tile ? selectedTileIds.has(tile.id) : false;
-              const isDangerRow = rIdx === 0;
+              const isBunnyMouthRow = rIdx === 0; // Top row: Bunny's open mouth zone
 
               return (
                 <div
                   key={`cell-${rIdx}-${cIdx}`}
-                  className="relative aspect-square w-full flex items-center justify-center rounded-xl overflow-hidden"
+                  className="relative aspect-square w-full flex items-center justify-center rounded-xl overflow-visible"
                 >
-                  {/* Ghost cell background */}
+                  {/* Cell Background Styling */}
                   <div
-                    className={`absolute inset-0 rounded-xl border transition-colors ${
-                      isDangerRow
-                        ? 'border-rose-900/40 bg-rose-950/10'
+                    className={`absolute inset-0 rounded-2xl border transition-all duration-200 flex flex-col items-center justify-center ${
+                      isBunnyMouthRow
+                        ? 'border-dashed border-rose-400/40 bg-rose-950/20 shadow-inner'
                         : 'border-slate-800/60 bg-slate-950/40'
                     }`}
-                  />
+                  >
+                    {/* Cute Bunny mouth suction zone icon in row 0 */}
+                    {isBunnyMouthRow && !tile && (
+                      <div className="flex flex-col items-center opacity-30 select-none pointer-events-none">
+                        <span className="text-xs sm:text-sm">🐰</span>
+                        <span className="text-[9px] text-rose-300 font-mono tracking-tighter -mt-0.5">
+                          兔嘴区
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Tile item if present */}
+                  {/* Carrot Tile with numbers & green leafy tops */}
                   {tile && (
-                    <button
-                      type="button"
+                    <CarrotTile
+                      tile={tile}
+                      isSelected={isSelected}
+                      isHinted={!!tile.isHinted}
                       onClick={() => onTileClick(tile)}
-                      disabled={tile.isClearing}
-                      className={`relative w-full h-full rounded-xl border flex flex-col items-center justify-center cursor-pointer transition-all duration-150 active:scale-90 ${getTileColor(
-                        tile.value,
-                        isSelected,
-                        !!tile.isHinted
-                      )} ${
-                        tile.isClearing ? 'scale-0 opacity-0 duration-200' : 'scale-100 opacity-100'
-                      }`}
-                      style={{
-                        WebkitTapHighlightColor: 'transparent',
-                      }}
-                    >
-                      {/* Special tile badge */}
-                      {tile.isSpecial && (
-                        <div className="absolute top-1 right-1">
-                          {tile.isSpecial === 'bomb' && (
-                            <span className="flex items-center justify-center w-3.5 h-3.5 rounded-full bg-rose-500 text-white shadow-xs">
-                              <Bomb className="w-2.5 h-2.5" />
-                            </span>
-                          )}
-                          {tile.isSpecial === 'multiplier' && (
-                            <span className="flex items-center justify-center px-1 rounded-sm bg-amber-400 text-slate-950 text-[9px] font-black shadow-xs">
-                              2X
-                            </span>
-                          )}
-                          {tile.isSpecial === 'freeze' && (
-                            <span className="flex items-center justify-center w-3.5 h-3.5 rounded-full bg-sky-400 text-slate-950 text-[9px] font-black shadow-xs">
-                              ❄
-                            </span>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Number Text */}
-                      <span className="text-xl sm:text-2xl font-display font-extrabold tracking-tight">
-                        {tile.value}
-                      </span>
-
-                      {/* Visual indicator when selected */}
-                      {isSelected && (
-                        <div className="absolute -bottom-0.5 inset-x-2 h-0.5 bg-slate-950/40 rounded-full" />
-                      )}
-                    </button>
+                    />
                   )}
                 </div>
               );

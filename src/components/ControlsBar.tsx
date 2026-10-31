@@ -34,7 +34,7 @@ export const ControlsBar: React.FC<ControlsBarProps> = ({
             ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 shadow-sm cursor-pointer'
             : 'bg-slate-900/40 text-slate-600 border-slate-800/40 opacity-50 cursor-not-allowed'
         }`}
-        title="清空当前所有选中数字"
+        title="清空当前选中的胡萝卜"
       >
         <XCircle className="w-3.5 h-3.5" />
         <span>清选</span>
@@ -52,7 +52,7 @@ export const ControlsBar: React.FC<ControlsBarProps> = ({
               ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer shadow-xs'
               : 'bg-slate-900/40 text-slate-600 border-slate-800/40 opacity-50 cursor-not-allowed'
           }`}
-          title="提示一组可行解"
+          title="提示一组可凑出目标的胡萝卜"
         >
           <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
           <span>提示 ({hintsLeft})</span>
@@ -68,7 +68,7 @@ export const ControlsBar: React.FC<ControlsBarProps> = ({
               ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border-rose-500/40 cursor-pointer shadow-xs ring-1 ring-rose-500/50'
               : 'bg-slate-900/40 text-slate-600 border-slate-800/40 cursor-not-allowed'
           }`}
-          title={canUseBomb ? '消除最上方一行化解危险' : `消除求和充能: ${bombCharge}%`}
+          title={canUseBomb ? '消除最上方一行胡萝卜，化解触碰兔嘴危机' : `消除胡萝卜充能: ${bombCharge}%`}
         >
           {/* Charge background bar */}
           {!canUseBomb && (
@@ -88,7 +88,7 @@ export const ControlsBar: React.FC<ControlsBarProps> = ({
           type="button"
           onClick={onManualPushRow}
           className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer transition-all shadow-sm"
-          title="立即从底部推入新的一行"
+          title="立即从底部推入一行新胡萝卜"
         >
           <ArrowUpFromLine className="w-3.5 h-3.5 text-slate-400" />
           <span className="hidden xs:inline">推升一行</span>

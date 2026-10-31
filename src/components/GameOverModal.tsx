@@ -43,27 +43,28 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl text-center">
-        {/* Header Icon / Badge */}
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mb-4 shadow-inner">
-          <Trophy className={`w-7 h-7 ${isNewHigh ? 'text-amber-400 animate-bounce' : 'text-rose-400'}`} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-sm rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl text-center">
+        {/* Cute Rabbit eating carrot icon */}
+        <div className="relative mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-500/20 to-orange-500/20 border border-orange-500/30 flex flex-col items-center justify-center mb-3 shadow-inner">
+          <span className="text-4xl animate-bounce">🐰</span>
+          <span className="text-xl -mt-2">🥕</span>
         </div>
 
         {/* Title */}
         <h2 className="text-2xl font-display font-extrabold text-white tracking-tight">
-          {isNewHigh ? '🎉 刷新最高纪录！' : '方块触顶 · 游戏结束'}
+          {isNewHigh ? '🎉 刷新最高纪录！' : '嗷呜！胡萝卜被小兔吃掉啦'}
         </h2>
-        <p className="text-xs text-slate-400 mt-1">
-          {mode === 'classic' ? '经典生存模式' : '计时挑战模式'}
+        <p className="text-xs text-orange-300/80 mt-1">
+          胡萝卜碰进了小兔子的嘴巴 · 游戏结束
         </p>
 
         {/* Score Display Card */}
-        <div className="mt-5 p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 flex flex-col items-center">
+        <div className="mt-4 p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 flex flex-col items-center">
           <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
             最终得分
           </span>
-          <span className="text-4xl font-display font-black text-amber-400 mt-1 font-mono-numbers">
+          <span className="text-4xl font-display font-black text-amber-400 mt-0.5 font-mono-numbers">
             {score.toLocaleString()}
           </span>
 
@@ -77,15 +78,15 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-2 mt-3 text-left">
-          <div className="p-2.5 rounded-lg bg-slate-800/40 border border-slate-800 flex flex-col">
-            <span className="text-[10px] text-slate-400">求和消除次数</span>
+          <div className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 flex flex-col">
+            <span className="text-[10px] text-slate-400">消除胡萝卜组合</span>
             <span className="text-base font-bold text-slate-200 font-mono-numbers flex items-center gap-1 mt-0.5">
-              <Target className="w-3.5 h-3.5 text-sky-400" />
+              <Target className="w-3.5 h-3.5 text-orange-400" />
               {clearedCount} 次
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-800/40 border border-slate-800 flex flex-col">
+          <div className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 flex flex-col">
             <span className="text-[10px] text-slate-400">最高连击</span>
             <span className="text-base font-bold text-slate-200 font-mono-numbers flex items-center gap-1 mt-0.5">
               <Flame className="w-3.5 h-3.5 text-amber-400" />
@@ -95,14 +96,14 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2">
           <button
             type="button"
             onClick={onPlayAgain}
-            className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
           >
             <RotateCcw className="w-4 h-4" />
-            <span>再玩一局</span>
+            <span>再来一局保卫胡萝卜</span>
           </button>
 
           <button
